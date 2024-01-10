@@ -2,12 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -87,38 +82,5 @@ public final class Constants {
     public static final double kDDrivePID = 0;
 
     public static final double isStoppedThreshold = 25;
-  }
-
-  public static final class AutoConstants {
-    public static final double kTrackWidth = Units.inchesToMeters(26);
-        // Distance between right and left wheels
-        public static final double kWheelBase = Units.inchesToMeters(26);
-        // Distance between front and back wheels
-    public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
-      new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
-      new Translation2d(kWheelBase / 2, kTrackWidth / 2),
-      new Translation2d(-kWheelBase / 2, -kTrackWidth / 2),
-      new Translation2d(-kWheelBase / 2, kTrackWidth / 2));
-
-    public static final double maxDriveSpeedMetersPerSecond = 1.5; //3.81
-    public static final double maxAccelerationMetersPerSecondSquared = 2; //2
-    public static final double maxAngularSpeedRadiansPerSecond = Math.PI;
-    public static final double maxAngularAccelerationRadiansPerSecondSquared = Math.PI/2;
-
-
-    public static final double trajectoryXControllerkP = 10;//TBD
-    public static final double trajectoryYControllerkP = 10;//TBD
-    public static final double trajectoryThetaControllerkP = 3;//TBD
-
-    public static final TrapezoidProfile.Constraints thetaTrapezoidProfile = new TrapezoidProfile.Constraints(AutoConstants.maxAngularSpeedRadiansPerSecond, 
-    AutoConstants.maxAngularAccelerationRadiansPerSecondSquared);
-  }
-
-  public static final class LimeLightConstants {
-    public static final Translation2d tag1XPosition = new Translation2d(0,-1.2573);
-    public static final Translation2d tag3XPosition = new Translation2d(6.6294,-1.23825);
-    public static final Translation2d tag5XPosition = new Translation2d(6.6294,-3.5258);
-    public static final Translation2d tag6XPosition = new Translation2d(6.6294,-2.3876);
-    public static final Translation2d tag7XPosition = new Translation2d(0,-1.829);
   }
 }

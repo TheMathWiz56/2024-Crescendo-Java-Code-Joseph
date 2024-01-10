@@ -12,27 +12,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants.DriveConstants;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RepeatCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import java.util.function.Supplier;
 
 
 public class SwerveDrive extends SubsystemBase {
@@ -158,7 +138,6 @@ public class SwerveDrive extends SubsystemBase {
   public boolean isStopped(){
     moduleSpeeds = getModuleSpeeds();
     for(int i = 0; i < moduleSpeeds.length; i++){
-      //SmartDashboard.putNumberArray("Module Speeds", moduleSpeeds);
       if (Math.abs(moduleSpeeds[i]) > DriveConstants.isStoppedThreshold){
         return false;
       }
@@ -174,9 +153,5 @@ public class SwerveDrive extends SubsystemBase {
     SmartDashboard.putNumber("Gyro Readout", getHeading());
     SmartDashboard.putString("Robot Heading", getPose().getRotation().toString());
     SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
-    //SmartDashboard.putString("FL Position", getSwerveModulePositions()[0].toString());
-    //SmartDashboard.putString("FR Position", getSwerveModulePositions()[1].toString());
-    //SmartDashboard.putString("BL Position", getSwerveModulePositions()[2].toString());
-    //SmartDashboard.putString("BR Position", getSwerveModulePositions()[3].toString());
     }
 }

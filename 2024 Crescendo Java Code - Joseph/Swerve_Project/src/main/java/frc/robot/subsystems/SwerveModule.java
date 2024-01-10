@@ -1,35 +1,21 @@
 package frc.robot.subsystems;
-
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.RelativeEncoder;
-
-import javax.xml.stream.events.StartElement;
-
-import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.hardware.CANcoder;
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
 
 
+
 public class SwerveModule {
 
-    private final CANSparkMax driveMotor;
-    private final boolean driveMotorReversed;
-    private final RelativeEncoder driveEncoder;
-    private final CANSparkMax turnMotor;
-    private final boolean turnMotorReversed;
+    private final TalonFX driveMotor;
 
+    private final TalonFX turnMotor;
     
     private final CANcoder canCoder;
     private final double canCoderOffset;
@@ -39,11 +25,8 @@ public class SwerveModule {
 
     public SwerveModule(int driveMotorid, int turnMotorid, boolean driveMotorReversed, boolean turnMotorReversed, int canCoderid, double canCoderOffset){
 
-        driveMotor = new CANSparkMax(driveMotorid, MotorType.kBrushless);
-        driveEncoder = driveMotor.getEncoder();
-        this.driveMotorReversed = driveMotorReversed;
-        turnMotor = new CANSparkMax(turnMotorid, MotorType.kBrushless);
-        this.turnMotorReversed = turnMotorReversed;
+        driveMotor = new TalonFX(driveMotorid);
+        turnMotor = new TalonFX(turnMotorid);
 
         canCoder = new CANcoder(canCoderid);
         this.canCoderOffset = canCoderOffset;
@@ -59,7 +42,7 @@ public class SwerveModule {
     }
 
     public void resetEncoders(){
-        driveEncoder.setPosition(0);
+        driveMotor.setRotorPosition(0);
     }
 
     public void stop(){
@@ -68,15 +51,15 @@ public class SwerveModule {
     }
 
     public double getDriveVelocityRPM(){
-        return driveEncoder.getVelocity();
+        return driveMotor.getVelocity().getValue();
     }
 
     public double getDrivePositionMeters(){
-        return driveEncoder.getPosition() * DriveConstants.RtoMeterConversion;
+        return driveMotor.getPosition().getValue() * DriveConstants.RtoMeterConversion;
     }
 
     public double getDrivePositionRotations(){
-        return driveEncoder.getPosition();
+        return driveMotor.getPosition().getValue();
     }
 
     public SwerveModulePosition getSwerveModulePosition(){
@@ -96,7 +79,7 @@ public class SwerveModule {
     }
 
     public double getdrivePIDOutput(double velocitySetpoint){
-        return drivePIDController.calculate(driveEncoder.getVelocity(), velocitySetpoint);
+        return drivePIDController.calculate(getDriveVelocityRPM(), velocitySetpoint);
     }
 
     public double getturnPIDOutput(double turnSetpoint){
@@ -111,16 +94,7 @@ public class SwerveModule {
         state = SwerveModuleState.optimize(state, getState().angle);
 
         turnMotor.set(-1 * getturnPIDOutput(state.angle.getDegrees()));
-        //SmartDashboard.putNumber("Module " + canCoder.getDeviceID() + " RPM ", getStateSpeedRPM(state));
-        driveMotor.set((driveMotorReversed) ? getdrivePIDOutput(getStateSpeedRPM(state)): -1 * getdrivePIDOutput(getStateSpeedRPM(state)));
-        
-        //SmartDashboard.putString("Module " + canCoder.getDeviceID() + " State ", state.toString());
-
-        //SmartDashboard.putNumber("Module " + canCoder.getDeviceID() + " Turn Setpoint", turnPIDController.getSetpoint());
-        //SmartDashboard.putNumber("Module " + canCoder.getDeviceID() + " Turn PV", getTurningPosition());
-        //SmartDashboard.putNumber("Module " + canCoder.getDeviceID() + " Turn Error", turnPIDController.getPositionError());
-        
-        //SmartDashboard.putNumber("Module " + canCoder.getDeviceID() + " Drive Setpoint", drivePIDController.getSetpoint());
-        //SmartDashboard.putNumber("Module " + canCoder.getDeviceID() + " Drive PV", driveEncoder.getVelocity());
+        //may have some issues here beuse motor wont be reversed
+        driveMotor.set(getdrivePIDOutput(getStateSpeedRPM(state)));
     }
 }
