@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.subsystems.Limelight;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.networktables.GenericEntry;
@@ -56,12 +55,9 @@ public class SwerveDrive extends SubsystemBase {
   private SwerveModulePosition[] modulePositions;
   private double moduleSpeeds[] = {0};
 
-  private final Limelight limelight;
-
   private Pose2d relativePose = new Pose2d();
 
-  public SwerveDrive(Limelight limelight) {
-    this.limelight = limelight;
+  public SwerveDrive() {
     isFieldOriented = true;
     zeroGyro();
   }
@@ -182,11 +178,5 @@ public class SwerveDrive extends SubsystemBase {
     //SmartDashboard.putString("FR Position", getSwerveModulePositions()[1].toString());
     //SmartDashboard.putString("BL Position", getSwerveModulePositions()[2].toString());
     //SmartDashboard.putString("BR Position", getSwerveModulePositions()[3].toString());
-
-    SmartDashboard.putBoolean("isStopped", isStopped());
-    if(isStopped() && limelight.getHasBotPose()){
-      setOdometer(limelight.getBotPose());
-      yawOffset = limelight.getBotPose().getRotation().minus(getRawRotation2d());
     }
-  }
 }

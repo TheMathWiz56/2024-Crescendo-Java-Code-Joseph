@@ -7,13 +7,8 @@ package frc.robot;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
 import frc.robot.commands.SwerveJoystickCmd;
 import frc.robot.subsystems.SwerveDrive;
-import frc.robot.subsystems.Limelight;
-import frc.robot.commands.DriveForward;
-import frc.robot.commands.FollowTrajectory;
-import frc.robot.commands.OnTheFlyTrajectory;
 import java.util.List;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
@@ -53,9 +48,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final Limelight limeLight = new Limelight();
-  private final SwerveDrive swerveDrive = new SwerveDrive(limeLight);
+
+  private final SwerveDrive swerveDrive = new SwerveDrive();
   
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -69,20 +63,6 @@ public class RobotContainer {
     swerveDrive.setDefaultCommand(new SwerveJoystickCmd(swerveDrive, () -> joystick0.getLeftX(),
      () -> joystick0.getLeftY(), () -> joystick0.getRightX()));
 
-    chooser.setDefaultOption("Nothing", null);
-    chooser.addOption("tag1", new OnTheFlyTrajectory(swerveDrive,1, () -> swerveDrive.getPose()));
-    chooser.addOption("tag3", new OnTheFlyTrajectory(swerveDrive,3, () -> swerveDrive.getPose()));
-		chooser.addOption("tag5", new OnTheFlyTrajectory(swerveDrive,5, () -> swerveDrive.getPose()));
-    chooser.addOption("tag6", new OnTheFlyTrajectory(swerveDrive,6, () -> swerveDrive.getPose()));
-    chooser.addOption("tag7", new OnTheFlyTrajectory(swerveDrive,7, () -> swerveDrive.getPose()));
-
-    SmartDashboard.putData("Tag Choices", chooser);
-    SmartDashboard.putData("Tag 1", new OnTheFlyTrajectory(swerveDrive,1, () -> swerveDrive.getPose()));
-    SmartDashboard.putData("Tag 3", new OnTheFlyTrajectory(swerveDrive,3, () -> swerveDrive.getPose()));
-    SmartDashboard.putData("Tag 5", new OnTheFlyTrajectory(swerveDrive,5, () -> swerveDrive.getPose()));
-    SmartDashboard.putData("Tag 6", new OnTheFlyTrajectory(swerveDrive,6, () -> swerveDrive.getPose()));
-    SmartDashboard.putData("Tag 7", new OnTheFlyTrajectory(swerveDrive,7, () -> swerveDrive.getPose()));
-
     // Configure the trigger bindings
     configureBindings();
   }
@@ -91,15 +71,7 @@ public class RobotContainer {
     joystick0.y().onTrue(Commands.runOnce(() -> swerveDrive.zeroGyro(), swerveDrive));
     joystick0.x().onTrue(Commands.runOnce(() -> swerveDrive.resetOdometer(), swerveDrive));
     joystick0.a().toggleOnTrue(Commands.runOnce(() -> swerveDrive.toggleIsFieldOriented(), swerveDrive));
-    joystick0.b().whileTrue(new DriveForward(swerveDrive, .2));
-    joystick0.leftBumper().whileTrue(new DriveForward(swerveDrive, -.2));
     joystick0.rightBumper().onTrue(Commands.runOnce(() -> swerveDrive.resetOdometer(), swerveDrive));
-    joystick0.back().onTrue(new FollowTrajectory(swerveDrive, List.of(new Translation2d(1, 0),new Translation2d(1, -1)), new Pose2d(0, 0,
-    Rotation2d.fromDegrees(0)),new Pose2d(2, -1, Rotation2d.fromDegrees(180)),
-    AutoConstants.trajectoryXControllerkP,AutoConstants.trajectoryYControllerkP, AutoConstants.trajectoryThetaControllerkP).getCommandSequence().andThen(new FollowTrajectory(swerveDrive, List.of(new Translation2d(-1, 0),new Translation2d(-1, 1)), new Pose2d(0, 0,
-    Rotation2d.fromDegrees(180)),new Pose2d(-2, 1, Rotation2d.fromDegrees(0)),
-    AutoConstants.trajectoryXControllerkP,AutoConstants.trajectoryYControllerkP, AutoConstants.trajectoryThetaControllerkP).getCommandSequence()));
-    joystick0.start().onTrue(new OnTheFlyTrajectory(swerveDrive,7, () -> swerveDrive.getPose()));
   }
 
   public Command getAutonomousCommand() {
