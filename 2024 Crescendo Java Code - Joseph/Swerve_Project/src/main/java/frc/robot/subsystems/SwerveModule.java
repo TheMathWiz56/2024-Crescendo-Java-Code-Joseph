@@ -1,7 +1,7 @@
 package frc.robot.subsystems;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.hardware.CANcoder;
-//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -51,7 +51,8 @@ public class SwerveModule {
     }
 
     public double getDriveVelocityRPM(){
-        return driveMotor.getVelocity().getValue();
+        SmartDashboard.putNumber("Motor " + driveMotor.getDeviceID() + " Velocity", driveMotor.getVelocity().getValue() * 60);
+        return driveMotor.getVelocity().getValue() * 60;
     }
 
     public double getDrivePositionMeters(){
@@ -59,6 +60,7 @@ public class SwerveModule {
     }
 
     public double getDrivePositionRotations(){
+        SmartDashboard.putNumber("Motor " + driveMotor.getDeviceID() + " Position", driveMotor.getPosition().getValue());
         return driveMotor.getPosition().getValue();
     }
 
@@ -67,7 +69,8 @@ public class SwerveModule {
     }
 
     public double getTurningPosition(){
-        return canCoder.getAbsolutePosition().getValue() * 360 - 180 - canCoderOffset;//orginally + cancoder fofset
+        return canCoder.getAbsolutePosition().getValue() * 360 - 180 - canCoderOffset;//removed  - cancoder offset
+        
     }
 
     public SwerveModuleState getState(){
@@ -79,7 +82,13 @@ public class SwerveModule {
     }
 
     public double getdrivePIDOutput(double velocitySetpoint){
-        return drivePIDController.calculate(getDriveVelocityRPM(), velocitySetpoint);
+        //SmartDashboard.putNumber("Motor " + driveMotor.getDeviceID() + " Velocity Setpoint", velocitySetpoint);
+        if(velocitySetpoint == 0){
+            return 0;
+        }
+        else{
+            return drivePIDController.calculate(getDriveVelocityRPM(), velocitySetpoint);
+        }
     }
 
     public double getturnPIDOutput(double turnSetpoint){
@@ -93,8 +102,7 @@ public class SwerveModule {
     public void setDesiredState(SwerveModuleState state){
         state = SwerveModuleState.optimize(state, getState().angle);
 
-        turnMotor.set(-1 * getturnPIDOutput(state.angle.getDegrees()));
-        //may have some issues here beuse motor wont be reversed
+        turnMotor.set(-1 *getturnPIDOutput(state.angle.getDegrees()));
         driveMotor.set(getdrivePIDOutput(getStateSpeedRPM(state)));
     }
 }

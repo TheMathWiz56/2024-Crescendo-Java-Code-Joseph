@@ -29,7 +29,7 @@ public final class Constants {
       new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
       new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
 
-    public static final double maxDriveSpeedMetersPerSecond = 3.81; //3.81
+    public static final double maxDriveSpeedMetersPerSecond = 4.12; //3.81
     public static final double maxAccelerationMetersPerSecondSquared = 3; //3
     public static final double maxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double maxAngularAccelerationRadiansPerSecondSquared = Math.PI/4;
@@ -40,32 +40,32 @@ public final class Constants {
     public static final double RPMtoMetersPerSecondConversion = 0.0006535336069; // RPM /60 / driveGearRatio * driveWheelCircumference
     public static final double MetersPerSecondtoRPMConversion = 1530.143193; // MPS * 60 / driveWheelcircumference * driveGearRatio 
 
-    public static final int FLDriveID = 10;
-    public static final int FLTurnID = 11;
+    public static final int FLDriveID = 31;
+    public static final int FLTurnID = 32;
     public static final int FLCANCoderID = 20;
-    public static final double FLOffset = 45;
-    public static final boolean FLDriveMotorReversed = true;
+    public static final double FLOffset = 44.47;
+    public static final boolean FLDriveMotorReversed = false;
     public static final boolean FLTurnMotorReversed = false;
 
-    public static final int FRDriveID = 12;
-    public static final int FRTurnID = 13;
-    public static final int FRCANCoderID = 21;
-    public static final double FROffset = 59.41404;
-    public static final boolean FRDriveMotorReversed = true;
+    public static final int FRDriveID = 37;
+    public static final int FRTurnID = 38;
+    public static final int FRCANCoderID = 23;
+    public static final double FROffset = 166.29;
+    public static final boolean FRDriveMotorReversed = false;
     public static final boolean FRTurnMotorReversed = false;
 
-    public static final int BLDriveID = 16;
-    public static final int BLTurnID = 17;
-    public static final int BLCANCoderID = 23;
-    public static final double BLOffset = -12.3048;
-    public static final boolean BLDriveMotorReversed = true;
+    public static final int BLDriveID = 36;
+    public static final int BLTurnID = 35;
+    public static final int BLCANCoderID = 22;
+    public static final double BLOffset = -112.68;
+    public static final boolean BLDriveMotorReversed = false;
     public static final boolean BLTurnMotorReversed = false;
 
-    public static final int BRDriveID = 14;
-    public static final int BRTurnID = 15;
-    public static final int BRCANCoderID = 22;
-    public static final double BROffset = 156.53304;
-    public static final boolean BRDriveMotorReversed = true;
+    public static final int BRDriveID = 33;
+    public static final int BRTurnID = 34;
+    public static final int BRCANCoderID = 21;
+    public static final double BROffset = 150.39;
+    public static final boolean BRDriveMotorReversed = false;
     public static final boolean BRTurnMotorReversed = false;
 
 

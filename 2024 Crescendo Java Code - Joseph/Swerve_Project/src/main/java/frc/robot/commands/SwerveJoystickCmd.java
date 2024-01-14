@@ -32,9 +32,9 @@ public class SwerveJoystickCmd extends CommandBase {
   @Override
   public void execute(){
 
-    double xSpeed = -1 * ySpdFunction.get();
-    double ySpeed = xSpdFunction.get() * -1;
-    double turningSpeed = turningSpdFunction.get() * -1;
+    double xSpeed = ySpdFunction.get();
+    double ySpeed = xSpdFunction.get();
+    double turningSpeed = turningSpdFunction.get();
     double radius = Math.sqrt(xSpeed * xSpeed + ySpeed * ySpeed);
 
     //SmartDashboard.putNumber("Radius", radius);
